@@ -1,0 +1,45 @@
+group = 'net.serenity-bdd'
+version =  System.getenv('ARTEFACT_VERSION') ?: '0.0.1-SNAPSHOT'
+
+apply plugin: 'java-library'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    api ("net.serenity-bdd:serenity-core:${serenityCoreVersion}") {
+        exclude group: 'junit', module: 'junit' //by both name and group
+    }
+    compileOnly ("net.serenity-bdd:serenity-core:${serenityCoreVersion}")
+    runtimeOnly ("net.serenity-bdd:serenity-core:${serenityCoreVersion}")
+    implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+    implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+
+    testCompile "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
+    testCompile "org.junit.platform:junit-platform-testkit:${junitTestKitVersion}"
+    testCompile "org.assertj:assertj-core:${assertJVersion}"
+    testCompile "org.slf4j:slf4j-simple:${slf4jVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testContainerVersion}"
+    testImplementation "org.testcontainers:selenium:${testContainerVersion}"
+    //testImplementation "org.seleniumhq.selenium:selenium-remote-driver:${seleniumRemoteDriver}3.141.59"
+}
+
+test {
+    useJUnitPlatform {
+        excludeTags "inner-test"
+    }
+    testLogging {
+        exceptionFormat = 'full'
+    }
+    testLogging.showStandardStreams = true
+}
+
+test.finalizedBy(aggregate)

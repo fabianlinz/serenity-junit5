@@ -1,0 +1,3 @@
+include 'serenity-junit5'
+include 'serenity-junit4-starter'
+include 'serenity-junit5-starter'

@@ -1,0 +1,32 @@
+defaultTasks 'clean','test','aggregate'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile "ch.qos.logback:logback-classic:${logbackVersion}"
+
+    testCompile "net.serenity-bdd:serenity-core:${serenityCoreVersion}"
+    testCompile "net.serenity-bdd:serenity-junit:${serenityCoreVersion}"
+    testCompile "junit:junit:${junitVersion}"
+    testCompile "org.assertj:assertj-core:${assertJVersion}"
+}
+
+test {
+    testLogging.showStandardStreams = true
+    ignoreFailures = true
+}
+
+gradle.startParameter.continueOnFailure = true
+
+test.finalizedBy(aggregate)
