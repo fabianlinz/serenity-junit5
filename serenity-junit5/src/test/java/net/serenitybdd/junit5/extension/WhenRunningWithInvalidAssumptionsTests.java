@@ -39,14 +39,14 @@ class WhenRunningWithInvalidAssumptionsTests {
     }
 
     @Test
-    void steps_after_ignored_step_should_be_skipped() {
+    void steps_after_ignored_step_should_be_ignored() {
         // when
         junit5.executesTestClass(AdditionalStepAfterStepWithInvalidAssumptionTest.class);
 
         // then
         junit5.shouldHaveExactlyOneTestOutcome();
         junit5.shouldHaveOnlyTestOutcomesWithResult(IGNORED);
-        junit5.shouldHaveStepResults(SUCCESS, SUCCESS, IGNORED, SKIPPED);
+        junit5.shouldHaveStepResults(SUCCESS, SUCCESS, IGNORED, IGNORED);
     }
 
     @Test
@@ -61,13 +61,13 @@ class WhenRunningWithInvalidAssumptionsTests {
     }
 
     @Test
-    void test_fails_with_direct_failure_after_step_with_invalid_assumption() { // this is currently different from the assertion failure behaviour
+    void test_fails_with_direct_failure_after_step_with_invalid_assumption() {
         // when
         junit5.executesTestClass(HavingAdditionalAssertionFailureAfterStepWithInvalidAssumptionTest.class);
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(FAILURE, "Failing after invalid assumption!");
-        junit5.shouldHaveStepResults(SUCCESS, IGNORED, SKIPPED);
+        junit5.shouldHaveStepResults(SUCCESS, IGNORED, IGNORED);
     }
 
     @SerenityExtensionInnerTest

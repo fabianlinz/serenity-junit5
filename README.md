@@ -2,7 +2,7 @@
 **This is a initial version for JUnit5 support for Serenity BDD. Feedback and help are highly appreciated.**
 
 # Writing and running Serenity BDD tests with JUnit5 (Jupiter test engine)
-The Serenity BDD features described for JUnit4 (http://thucydides.info/docs/serenity-staging/#_serenity_with_junit)
+The [Serenity BDD](https://github.com/serenity-bdd/serenity-core) features described for JUnit4 (http://thucydides.info/docs/serenity-staging/#_serenity_with_junit)
 should also work for JUnit5 (unless mentioned in the known limitations section below).
 
 Aspects specific to JUnit4 (e.g. packages for the `@Test` annotation or the name of lifecycle annotations) are
@@ -44,15 +44,6 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
 
 # Known limitations/currently not supported features:
 
-## serenity-core and serenity-model depend on JUnit4
-* serenity-core and serenity-model have dependencies to JUnit4, which has several implications.
-    * At runtime JUnit4 is currently still needed.
-    * serenity-core and serenity-model should be changed such that JUnit4 is an optional dependency.
-* Automatically taking screenshot for web tests
-    * Screenshots are only taken if `TestCaseAnnotations.isASerenityTestCase` is true. Currently this method only works for JUnit4 tests as
-    it checks for the annotation `@RunWith`   
-    * Workaround: Tests can extend `net.serenitybdd.junit5.AbstractSerenityTestDetectionWorkaround`
-
 ## Serenity BDD features
 * `@WithTag` and `@WithTagsValuesOfTagging`
     * http://thucydides.info/docs/serenity-staging/#_filtering_test_executing_with_tags)
@@ -75,6 +66,9 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
 * Serenity annotation `@UsePersistantStepLibraries`
     * JUnit4: `SerenityRunner#runChild >> `SerenityRunner#resetStepLibrariesIfRequired() + `net.serenitybdd.junit5.extension.page.TestConfiguration#shouldResetStepLibraries` (be careful with dependency to page stuff)
 * Extension point analog to JUnit4 SerenityRunner#additionalBrowserCleanup
+* Junit5 `@Disabled` annotation can't be used to skip step methods ([#6](https://github.com/fabianlinz/serenity-junit5/issues/6))
+   * Usage for test methods works fine. Using the Serenity annotation `@Pending` also works fine.
+   * JUnit4 allows steps method to be skipped by annotating them with the JUnit4 annotation `@Ignore`. The analog JUnit5 annotation `@Disabled` is currently not detected by serenity-core.
 
 ## JUnit5 features
 * `@Nested`
@@ -141,3 +135,4 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
 * Not integrated because currently only used for tests and not necessary for JUnit5
   * net.serenitybdd.junit.runners.SerenityRunner#clearMetadataIfRequired (net.serenitybdd.junit5.extension.page.TestConfiguration#shouldClearMetadata)
 net.serenitybdd.core.Serenity#getCurrentSession
+* serenity-core and serenity-model versions before `2.0.84` have a runtime dependencies to JUnit4. This was removed by [#1884](https://github.com/serenity-bdd/serenity-core/issues/1858)

@@ -18,8 +18,6 @@ dependencies {
     api ("net.serenity-bdd:serenity-core:${serenityCoreVersion}") {
         exclude group: 'junit', module: 'junit' //by both name and group
     }
-    compileOnly ("net.serenity-bdd:serenity-core:${serenityCoreVersion}")
-    runtimeOnly ("net.serenity-bdd:serenity-core:${serenityCoreVersion}")
     implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
 
@@ -27,8 +25,21 @@ dependencies {
     testCompile "org.junit.platform:junit-platform-testkit:${junitTestKitVersion}"
     testCompile "org.assertj:assertj-core:${assertJVersion}"
     testCompile "org.slf4j:slf4j-simple:${slf4jVersion}"
-    testImplementation "org.testcontainers:junit-jupiter:${testContainerVersion}"
-    testImplementation "org.testcontainers:selenium:${testContainerVersion}"
+
+    // Testcontainers currently has a dependency to to JUnit4 which we don't want on the classpath.
+    // > https://www.testcontainers.org/test_framework_integration/junit_5
+    // > https://github.com/testcontainers/testcontainers-java/issues/87
+    testImplementation ("org.testcontainers:selenium:${testContainerVersion}") {
+        exclude group: 'junit', module: 'junit' //by both name and group
+    }
+    testImplementation ("org.testcontainers:junit-jupiter:${testContainerVersion}") {
+        exclude group: 'junit', module: 'junit' //by both name and group
+    }
+    // Because Testcontainers requires JUnit4 rule support to be on the classpath the JUnit5 migration-support is used here 
+    // (to avoid a dependency to JUnit4 itself)
+    // > https://junit.org/junit5/docs/current/user-guide/#migrating-from-junit4-rule-support
+    testCompile "org.junit.jupiter:junit-jupiter-migrationsupport:${junit5Version}"
+    
     //testImplementation "org.seleniumhq.selenium:selenium-remote-driver:${seleniumRemoteDriver}3.141.59"
 }
 
