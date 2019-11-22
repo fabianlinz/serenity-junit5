@@ -30,7 +30,7 @@ class InnerSteps {
 
     @Step
     void invalidAssumption() {
-        assumeTrue(false,  "Assumption outside step is invalid!");
+        assumeTrue(false,  "Assumption in step is invalid!");
         // can't use AssertJ because as long as Junit4 is on the classpath the Junit4 AssumptionViolatedException
         // is thrown instead of the intended TestAbortedException
     }

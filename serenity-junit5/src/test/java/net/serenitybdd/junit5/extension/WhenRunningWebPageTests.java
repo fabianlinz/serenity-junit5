@@ -513,7 +513,7 @@ class WhenRunningWebPageTests {
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     static class ConditionalClearingOfWebDriverTest {
 
-        @Managed(clearCookies = ClearCookiesPolicy.Never)
+        @Managed(clearCookies = ClearCookiesPolicy.Never) // and requires "serenity.restart.browser.for.each=FEATURE"
         WebDriver notClearingWebDriver;
 
         @Managed

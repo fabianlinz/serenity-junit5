@@ -1,6 +1,5 @@
 package net.serenitybdd.junit5.extension;
 
-import net.thucydides.core.model.TestResult;
 import net.thucydides.core.steps.BaseStepListener;
 import net.thucydides.core.steps.StepEventBus;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -32,7 +31,7 @@ public class SerenityStepExtension implements BeforeEachCallback, InvocationInte
         } catch (final AssertionError assertionError) {
             // suppress assertion error outside a step method if a previous step method failed.
             // net.thucydides.core.steps.StepInterceptor.executeTestStepMethod handles assertion error inside a step.
-            if (noStepInTheCurrentTestHasFailed(extensionContext)) {
+            if (noStepInTheCurrentTestHasFailed()) {
                 throw assertionError;
             }
         }
@@ -41,13 +40,11 @@ public class SerenityStepExtension implements BeforeEachCallback, InvocationInte
         throwStepAssumptionViolations(extensionContext);
     }
 
-    private boolean noStepInTheCurrentTestHasFailed(final ExtensionContext extensionContext) {
-        workaroundUntilStepInterceptorHandlesJunit5TestAbortedExceptionAnalogToJunit4AssumptionViolatedException(extensionContext);
+    private boolean noStepInTheCurrentTestHasFailed() {
         return !getEventBus().aStepInTheCurrentTestHasFailed();
     }
 
     private void throwStepFailures(final ExtensionContext extensionContext) throws Throwable {
-        workaroundUntilStepInterceptorHandlesJunit5TestAbortedExceptionAnalogToJunit4AssumptionViolatedException(extensionContext);
         final BaseStepListener baseStepListener = baseStepListener();
         if (baseStepListener.aStepHasFailed()) {
             throw baseStepListener.getTestFailureCause().toException();
@@ -59,21 +56,6 @@ public class SerenityStepExtension implements BeforeEachCallback, InvocationInte
         if (eventBus.assumptionViolated()) {
             throw new TestAbortedException(eventBus.getAssumptionViolatedMessage());
         }
-    }
-
-    private void workaroundUntilStepInterceptorHandlesJunit5TestAbortedExceptionAnalogToJunit4AssumptionViolatedException(final ExtensionContext context) {
-        final BaseStepListener baseStepListener = baseStepListener();
-        baseStepListener.latestTestOutcome().ifPresent(testOutcome -> {
-                    testOutcome.getTestSteps().stream()
-                            .filter(step -> TestResult.ERROR.equals(step.getResult()))
-                            .filter(step -> step.getException() != null && step.getException().getOriginalCause() instanceof TestAbortedException)
-                            .forEach(step -> step.setResult(TestResult.IGNORED));
-                    if (testOutcome.getTestFailureCause() != null && testOutcome.getTestFailureCause().getOriginalCause() instanceof TestAbortedException && TestResult.ERROR.equals(testOutcome.getAnnotatedResult())) {
-                        baseStepListener.clearForcedResult();
-                        baseStepListener.getEventBus().clearStepFailures();
-                    }
-                }
-        );
     }
 
     private BaseStepListener baseStepListener() {
