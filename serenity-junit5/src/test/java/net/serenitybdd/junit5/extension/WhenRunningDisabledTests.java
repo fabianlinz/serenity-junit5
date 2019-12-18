@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.thucydides.core.model.TestResult.IGNORED;
+import static net.thucydides.core.model.TestResult.PENDING;
+import static net.thucydides.core.model.TestResult.SUCCESS;
 
 @SerenityExtensionTest
 class WhenRunningDisabledTests {
@@ -25,6 +27,17 @@ class WhenRunningDisabledTests {
         junit5.shouldHaveOnlyTestOutcomesWithResult(IGNORED);
     }
 
+    @Test
+    void disabled_step_method_is_skipped() {
+        // when
+        junit5.executesTestClass(DisabledStepTest.class);
+
+        // then
+        junit5.shouldHaveExactlyOneTestOutcome();
+        junit5.shouldHaveOnlyTestOutcomesWithResult(IGNORED);
+        junit5.shouldHaveStepResults(SUCCESS, IGNORED, SUCCESS);
+    }
+
     @SerenityExtensionInnerTest
     static class DisabledTest {
         @Test
@@ -35,5 +48,18 @@ class WhenRunningDisabledTests {
 
     }
 
+    @SerenityExtensionInnerTest
+    static class DisabledStepTest {
 
+        @Steps
+        private InnerSteps innerSteps;
+
+        @Test
+        void shouldBeDisabled() {
+            innerSteps.succeedingStepNumber(1);
+            innerSteps.disabled();
+            innerSteps.succeedingStepNumber(2);
+        }
+
+    }
 }

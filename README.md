@@ -66,9 +66,6 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
 * Serenity annotation `@UsePersistantStepLibraries`
     * JUnit4: `SerenityRunner#runChild >> `SerenityRunner#resetStepLibrariesIfRequired() + `net.serenitybdd.junit5.extension.page.TestConfiguration#shouldResetStepLibraries` (be careful with dependency to page stuff)
 * Extension point analog to JUnit4 SerenityRunner#additionalBrowserCleanup
-* Junit5 `@Disabled` annotation can't be used to skip step methods ([#6](https://github.com/fabianlinz/serenity-junit5/issues/6))
-   * Usage for test methods works fine. Using the Serenity annotation `@Pending` also works fine.
-   * JUnit4 allows steps method to be skipped by annotating them with the JUnit4 annotation `@Ignore`. The analog JUnit5 annotation `@Disabled` is currently not detected by serenity-core.
 
 ## JUnit5 features
 * `@Nested`
@@ -103,6 +100,19 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
 * @RepeatedTest
 * @TestFactory
 * @TestTemplate
+
+## Notes on supported features
+* Junit5 `@Disabled` annotation can be used on *test* and *step* methods
+   * The following table outlines the difference of using JUnit5 `@Disabled` and Serenity `@Pending` on a step method
+
+        | Consequence of annotated step method for...     | JUnit5 `@Disabled` (same as `@Ignore` in JUnit4)         | Serenity `@Pending`  | 
+        | ------------------------------------------------|--------------------------------------------------------------| --------| 
+        | test outcome                                    | `ignored` | `pending` |
+        | annotated step method                           | skipped (= not executed) | skipped (= not executed) |
+        | annotated step method in report                 | `ignored`  | `pending` |
+        | step methods after the annotated step           | executed   | skipped (= not executed)|
+        | step methods after the annotated step in report | depending on execution e.g. `success`   | `ignored` |
+
 
 ## General notes:
 * Should there be an alternative for identifying WebTests?

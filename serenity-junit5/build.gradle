@@ -35,12 +35,11 @@ dependencies {
     testImplementation ("org.testcontainers:junit-jupiter:${testContainerVersion}") {
         exclude group: 'junit', module: 'junit' //by both name and group
     }
-    // Because Testcontainers requires JUnit4 rule support to be on the classpath the JUnit5 migration-support is used here 
-    // (to avoid a dependency to JUnit4 itself)
+    // Because Testcontainers requires JUnit4 rule support to be on the classpath the JUnit5 migration-support is used here
+    // (which bring Junit4 back to the classpath)
     // > https://junit.org/junit5/docs/current/user-guide/#migrating-from-junit4-rule-support
-    testCompile "org.junit.jupiter:junit-jupiter-migrationsupport:${junit5Version}"
-    
-    //testImplementation "org.seleniumhq.selenium:selenium-remote-driver:${seleniumRemoteDriver}3.141.59"
+    testRuntime "org.junit.jupiter:junit-jupiter-migrationsupport:${junit5Version}"
+    testCompileOnly "org.junit.jupiter:junit-jupiter-migrationsupport:${junit5Version}"
 }
 
 test {

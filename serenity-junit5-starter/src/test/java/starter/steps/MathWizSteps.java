@@ -1,6 +1,7 @@
 package starter.steps;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.annotations.Steps;
 import org.junit.jupiter.api.Assertions;
 
 import static org.assertj.core.api.BDDAssertions.then;
