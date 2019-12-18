@@ -8,13 +8,11 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @SerenityTest
 class PureJunit5Test {
 
-
     @Test
     void throwingExceptionFailure() {
         // When
         throw new RuntimeException("should fail the test");
     }
-
 
     @Test
     void abortedTest() {
