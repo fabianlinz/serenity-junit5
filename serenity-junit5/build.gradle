@@ -5,6 +5,7 @@ apply plugin: 'java-library'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -40,6 +41,24 @@ dependencies {
     // > https://junit.org/junit5/docs/current/user-guide/#migrating-from-junit4-rule-support
     testRuntime "org.junit.jupiter:junit-jupiter-migrationsupport:${junit5Version}"
     testCompileOnly "org.junit.jupiter:junit-jupiter-migrationsupport:${junit5Version}"
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/fabianlinz/serenity-junit5")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
+                password = project.findProperty("gpr.key") ?: System.getenv("GPR_API_KEY")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
 
 test {
