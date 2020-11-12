@@ -1,10 +1,11 @@
-group = 'net.serenity-bdd'
-version =  System.getenv('ARTEFACT_VERSION') ?: '0.0.1-SNAPSHOT'
+group = 'io.github.fabianlinz'
+version =  project.hasProperty('releaseTag') ? project.property('releaseTag').replace('refs/tags/', '') : '0.0.1-SNAPSHOT'
 
 apply plugin: 'java-library'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -53,3 +54,42 @@ test {
 }
 
 test.finalizedBy(aggregate)
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/fabianlinz/serenity-junit5/")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
+
+    publications {
+        gpr(MavenPublication) {
+            from components.java
+            artifact sourceJar {
+                classifier "sources"
+            }
+
+            pom {
+                name.set("Serenity JUnit5")
+                url.set("https://github.com/fabianlinz/serenity-junit5")
+                licenses {
+                    license {
+                        name.set("Apache-2.0 License")
+                        url.set("https://github.com/fabianlinz/serenity-junit5/blob/master/LICENSE")
+                    }
+                }
+            }
+        }
+    }
+}
+
+publish.dependsOn(build)

@@ -1,11 +1,13 @@
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
 # https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-name: Build
+name: Publish release
 
-on: [push]
+on:
+  release:
+    types: [published]
 
 jobs:
-  build:
+  publish-release:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -15,15 +17,8 @@ jobs:
         java-version: 1.8
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: Archive serenity-junit5.jar
-      uses: actions/upload-artifact@v2
-      with:
-        name: serenity-junit5.jar
-        path: serenity-junit5/build/libs/*.jar
-    - name: Serenity report
-      uses: actions/upload-artifact@v2
-      with:
-        name: serenity report
-        path: serenity-junit5/target/site/serenity/
+    - name: Build and publish
+      run: ./gradlew publish -PreleaseTag=${GITHUB_REF}
+      env:
+        USERNAME: ${{ github.actor }}
+        PASSWORD: ${{ secrets.GITHUB_TOKEN }}
