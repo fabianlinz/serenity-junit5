@@ -1,4 +1,3 @@
-# Alpha
 **This is a initial version for JUnit5 support for Serenity BDD. Feedback and help are highly appreciated.**
 
 # Writing and running Serenity BDD tests with JUnit5 (Jupiter test engine)
@@ -19,7 +18,7 @@ public class WhenCalculatingFrequentFlyerPoints {
     TravellerSteps travellerSteps;
 
     @Test
-    public void shouldCalculatePointsBasedOnDistance() {
+    void shouldCalculatePointsBasedOnDistance() {
         // GIVEN
         travellerSteps.a_traveller_has_a_frequent_flyer_account_with_balance(10000);    
 

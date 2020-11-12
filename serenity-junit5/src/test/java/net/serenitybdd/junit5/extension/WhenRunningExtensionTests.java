@@ -30,7 +30,7 @@ class WhenRunningExtensionTests {
                 .execute();
 
         // then
-        results.tests().assertStatistics(stats -> stats.failed(3).succeeded(0));
+        results.testEvents().assertStatistics(stats -> stats.failed(3).succeeded(0));
     }
 
     @SerenityTest

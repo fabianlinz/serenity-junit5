@@ -1,6 +1,7 @@
 package net.serenitybdd.junit5.extension.testsupport;
 
 import net.thucydides.core.guice.Injectors;
+import net.thucydides.core.logging.LoggingLevel;
 import net.thucydides.core.util.EnvironmentVariables;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
@@ -19,9 +20,7 @@ public class QuietSerenityLoggingExtension implements InvocationInterceptor {
                 environmentVariables = Injectors.getInjector().getProvider(EnvironmentVariables.class).get();
         final String originalValue = environmentVariables.getProperty("serenity.logging");
         try {
-            // not an "official" level from serenity-model, only possible because we have a duplicate
-            // of the LoggingLevel class here in the test module ;-(
-            environmentVariables.setProperty(SERENITY_LOGGING, "OFF");
+            environmentVariables.setProperty(SERENITY_LOGGING, LoggingLevel.NONE.name());
             invocation.proceed();
         } finally {
             if (originalValue != null) {
