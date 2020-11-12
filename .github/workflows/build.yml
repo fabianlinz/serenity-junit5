@@ -17,3 +17,13 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Archive serenity-junit5.jar
+      uses: actions/upload-artifact@v2
+      with:
+        name: serenity-junit5.jar
+        path: serenity-junit5/build/libs/*.jar
+    - name: Serenity report
+      uses: actions/upload-artifact@v2
+      with:
+        name: serenity report
+        path: serenity-junit5/target/site/serenity/
