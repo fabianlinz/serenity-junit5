@@ -66,7 +66,7 @@ publishing {
             url = uri("https://maven.pkg.github.com/fabianlinz/serenity-junit5/")
             credentials {
                 username = System.getenv("USERNAME")
-                password = System.getenv("TOKEN")
+                password = System.getenv("PASSWORD")
             }
         }
     }
