@@ -1,6 +1,10 @@
 package net.serenitybdd.junit5.extension;
 
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import net.thucydides.core.annotations.Manual;
 import net.thucydides.core.annotations.Pending;
+import net.thucydides.core.model.TestResult;
 import net.thucydides.core.steps.StepEventBus;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -9,6 +13,7 @@ import org.junit.jupiter.api.extension.LifecycleMethodExecutionExceptionHandler;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.opentest4j.TestAbortedException;
 
+import java.lang.reflect.Method;
 import java.util.Optional;
 
 import static net.thucydides.core.steps.StepEventBus.getEventBus;
@@ -21,7 +26,8 @@ public class SerenityJUnitLifecycleAdapterExtension implements BeforeEachCallbac
     public void beforeEach(final ExtensionContext extensionContext) {
         notifyTestStarted(extensionContext, extensionContext.getDisplayName().replace("()", ""));
 
-        if (extensionContext.getRequiredTestMethod().isAnnotationPresent(Pending.class)) {
+        final Method testMethod = extensionContext.getRequiredTestMethod();
+        if (testMethod.isAnnotationPresent(Pending.class) && !testMethod.isAnnotationPresent(Manual.class)) {
             throw new PendingException();
         }
     }
@@ -47,7 +53,9 @@ public class SerenityJUnitLifecycleAdapterExtension implements BeforeEachCallbac
 
     @Override
     public void testAborted(final ExtensionContext extensionContext, final Throwable cause) {
-        if (cause instanceof PendingException) {
+        if (cause instanceof ManualTestAbortedException) {
+            // do nothing... eventBus registration was already done by net.serenitybdd.junit5.extension.SerenityManualExtension
+        } else if (cause instanceof PendingException) {
             getEventBus().testPending();
         } else {
             getEventBus().assumptionViolated(cause.getMessage());
@@ -97,5 +105,12 @@ public class SerenityJUnitLifecycleAdapterExtension implements BeforeEachCallbac
 
     private static class PendingException extends TestAbortedException {
 
+    }
+
+    @RequiredArgsConstructor
+    @ToString
+    static class ManualTestAbortedException extends TestAbortedException {
+
+        private final TestResult annotatedResult;
     }
 }
