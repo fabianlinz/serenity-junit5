@@ -1,6 +1,8 @@
-package starter.math;
+package starter;
 
 import net.serenitybdd.junit5.SerenityTest;
+import net.thucydides.core.annotations.Manual;
+import net.thucydides.core.model.TestResult;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.assumeTrue;

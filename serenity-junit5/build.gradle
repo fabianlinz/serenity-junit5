@@ -16,8 +16,11 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
     api ("net.serenity-bdd:serenity-core:${serenityCoreVersion}") {
-        exclude group: 'junit', module: 'junit' //by both name and group
+        exclude group: 'junit', module: 'junit'
     }
     api "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
 
@@ -30,10 +33,10 @@ dependencies {
     // > https://www.testcontainers.org/test_framework_integration/junit_5
     // > https://github.com/testcontainers/testcontainers-java/issues/87
     testImplementation ("org.testcontainers:selenium:${testContainerVersion}") {
-        exclude group: 'junit', module: 'junit' //by both name and group
+        exclude group: 'junit', module: 'junit'
     }
     testImplementation ("org.testcontainers:junit-jupiter:${testContainerVersion}") {
-        exclude group: 'junit', module: 'junit' //by both name and group
+        exclude group: 'junit', module: 'junit'
     }
     // Because Testcontainers requires JUnit4 rule support to be on the classpath the JUnit5 migration-support is used here
     // (which bring Junit4 back to the classpath)

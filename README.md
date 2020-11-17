@@ -55,6 +55,18 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
     * different annotations are used for the lifecycle hooks
     * different extension mechanism: JUnit4 Rule vs. JUnit5 Extension
 
+## Notes on supported features
+* Junit5 `@Disabled` annotation can be used on *test* and *step* methods
+   * The following table outlines the difference of using JUnit5 `@Disabled` and Serenity `@Pending` on a step method
+
+        | Consequence of annotated step method for...     | JUnit5 `@Disabled` (same as `@Ignore` in JUnit4)         | Serenity `@Pending`  | 
+        | ------------------------------------------------|--------------------------------------------------------------| --------| 
+        | test outcome                                    | `ignored` | `pending` |
+        | annotated step method                           | skipped (= not executed) | skipped (= not executed) |
+        | annotated step method in report                 | `ignored`  | `pending` |
+        | step methods after the annotated step           | executed   | skipped (= not executed)|
+        | step methods after the annotated step in report | depending on execution e.g. `success`   | `ignored` |
+
 # Known limitations/currently not supported features:
 
 ## Serenity BDD features
@@ -63,8 +75,6 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
     * Tags are shown in the report
     * Filtering of tests not possible => works with JUnit5 `@Tag` though
     * Overlap with JUnit5 `@Tag` support
-* `@Manual`
-    * see also `net.serenitybdd.junit.runners.SerenityRunner#markAsManual`)
 * `@Title`
     * http://thucydides.info/docs/serenity-staging/#_human_readable_method_titles
     * The title is not considered for report nor as test name from JUnit perspective
@@ -83,7 +93,7 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
 ## JUnit5 features
 * `@Nested`
     * Injection not working (Steps, Page and WebDriver)
-    * Story name should propably be a combination of the parent name and the nested test class name
+    * Story name should probably be a combination of the parent name and the nested test class name
     * see also https://junit.org/junit5/docs/current/user-guide/#writing-tests-nested
 * `@Tag`
     * NOT considered for the report
@@ -113,19 +123,6 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
 * @RepeatedTest
 * @TestFactory
 * @TestTemplate
-
-## Notes on supported features
-* Junit5 `@Disabled` annotation can be used on *test* and *step* methods
-   * The following table outlines the difference of using JUnit5 `@Disabled` and Serenity `@Pending` on a step method
-
-        | Consequence of annotated step method for...     | JUnit5 `@Disabled` (same as `@Ignore` in JUnit4)         | Serenity `@Pending`  | 
-        | ------------------------------------------------|--------------------------------------------------------------| --------| 
-        | test outcome                                    | `ignored` | `pending` |
-        | annotated step method                           | skipped (= not executed) | skipped (= not executed) |
-        | annotated step method in report                 | `ignored`  | `pending` |
-        | step methods after the annotated step           | executed   | skipped (= not executed)|
-        | step methods after the annotated step in report | depending on execution e.g. `success`   | `ignored` |
-
 
 ## General notes:
 * Should there be an alternative for identifying WebTests?

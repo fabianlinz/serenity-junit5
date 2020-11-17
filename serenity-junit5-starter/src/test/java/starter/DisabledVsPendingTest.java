@@ -1,4 +1,4 @@
-package starter.math;
+package starter;
 
 import net.serenitybdd.junit5.SerenityTest;
 import net.thucydides.core.annotations.Pending;
