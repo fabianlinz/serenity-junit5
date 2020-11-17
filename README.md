@@ -1,4 +1,7 @@
-**This is a initial version for JUnit5 support for Serenity BDD. Feedback and help are highly appreciated.**
+![master build status](https://github.com/fabianlinz/serenity-junit5/workflows/Build/badge.svg?branch=master)
+[![maven-central](https://img.shields.io/maven-central/v/io.github.fabianlinz/serenity-junit5.svg)](https://search.maven.org/search?q=g:io.github.fabianlinz%20AND%20a:serenity-junit5)
+
+**This is a early version of JUnit5 support for Serenity BDD. Feedback and help are highly appreciated.**
 
 # Writing and running Serenity BDD tests with JUnit5 (Jupiter test engine)
 The [Serenity BDD](https://github.com/serenity-bdd/serenity-core) features described for JUnit4 (http://thucydides.info/docs/serenity-staging/#_serenity_with_junit)
@@ -10,7 +13,7 @@ different of cause (see also https://junit.org/junit5/docs/current/user-guide/#m
 To run a JUnit5 test with Serenity BDD, simply add the annotation `@net.serenitybdd.junit5.SerenityTest` (instead of `@org.junit.runner.RunWith(net.serenitybdd.junit.runners.SerenityRunner.class`) for JUnit4)
 
 Basic example (analog to http://thucydides.info/docs/serenity-staging/#_basic_junit_integration):
-```
+```java
 @SerenityTest                                                       
 public class WhenCalculatingFrequentFlyerPoints {
 
@@ -30,6 +33,17 @@ public class WhenCalculatingFrequentFlyerPoints {
 
     }
 }
+```
+
+
+To get started just include a dependency to [`io.github.fabianlinz:serenity-junit5`](https://search.maven.org/search?q=g:io.github.fabianlinz%20AND%20a:serenity-junit5).
+
+Adding a direct dependency to `serenity-core` allows to easily use newer versions of Serenity. The transitive dependency to JUnit4 should be excluded though:
+```
+    testImplementation ('io.github.fabianlinz:serenity-junit5:VERSION')
+    testImplementation ('net.serenity-bdd:serenity-core:VERSION') { // optional: in case a newer version should be used
+        exclude group: 'junit', module: 'junit'
+    }
 ```
 
 # Why JUnit5 support for Serenity BDD?

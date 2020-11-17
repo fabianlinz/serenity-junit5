@@ -18,7 +18,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build and publish
-      run: ./gradlew publish -PreleaseTag=${GITHUB_REF}
+      run: ./gradlew build publishAllPublicationsToGitHubPackagesRepository -PreleaseTag=${GITHUB_REF}
       env:
         USERNAME: ${{ github.actor }}
         PASSWORD: ${{ secrets.GITHUB_TOKEN }}

@@ -1,5 +1,5 @@
 group = 'io.github.fabianlinz'
-version =  project.hasProperty('releaseTag') ? project.property('releaseTag').replace('refs/tags/', '') : '0.0.1-SNAPSHOT'
+version =  project.hasProperty('releaseTag') ? project.property('releaseTag').replace('refs/tags/', '') : (project.hasProperty('branch') ? branchVersion() : '0.0.1-SNAPSHOT')
 
 apply plugin: 'java-library'
 apply plugin: 'eclipse'
@@ -55,10 +55,10 @@ test {
 
 test.finalizedBy(aggregate)
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
-
 publishing {
     repositories {
         maven {
@@ -69,27 +69,57 @@ publishing {
                 password = System.getenv("PASSWORD")
             }
         }
+
+        maven {
+            name = "OSSRH"
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = System.getenv("OSSRH_USER")
+                password = System.getenv("OSSRH_PASSWORD")
+            }
+        }
     }
 
     publications {
-        gpr(MavenPublication) {
+        maven(MavenPublication) {
             from components.java
-            artifact sourceJar {
-                classifier "sources"
-            }
 
             pom {
-                name.set("Serenity JUnit5")
-                url.set("https://github.com/fabianlinz/serenity-junit5")
+                name = "Serenity JUnit5"
+                description = "Writing and running Serenity BDD tests with JUnit5 (Jupiter test engine)"
+                url = "https://github.com/fabianlinz/serenity-junit5"
                 licenses {
                     license {
-                        name.set("Apache-2.0 License")
-                        url.set("https://github.com/fabianlinz/serenity-junit5/blob/master/LICENSE")
+                        name = "The Apache License, Version 2.0"
+                        url = "https://github.com/fabianlinz/serenity-junit5/blob/master/LICENSE"
                     }
+                }
+                developers {
+                    developer {
+                        name = 'Fabian Linz'
+                        organizationUrl = "https://github.com/fabianlinz"
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com:fabianlinz/serenity-junit5.git'
+                    developerConnection = 'scm:git://github.com:fabianlinz/serenity-junit5.git'
+                    url = 'https://github.com/fabianlinz/serenity-junit5'
                 }
             }
         }
     }
 }
 
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
 publish.dependsOn(build)
+
+private branchVersion() {
+    project.property('branch').replace('refs/heads/', '').replace('/', '-') + "-SNAPSHOT"
+}
