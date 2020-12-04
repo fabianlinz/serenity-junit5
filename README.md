@@ -41,7 +41,7 @@ To get started just include a dependency to [`io.github.fabianlinz:serenity-juni
 Adding a direct dependency to `serenity-core` allows to easily use newer versions of Serenity. The transitive dependency to JUnit4 should be excluded though:
 ```
     testImplementation ('io.github.fabianlinz:serenity-junit5:VERSION')
-    testImplementation ('net.serenity-bdd:serenity-core:VERSION') { // optional: in case a newer version should be used
+    testImplementation ('net.serenity-bdd:serenity-core:VERSION') { // optional: in case a newer version than the transitively included should be used
         exclude group: 'junit', module: 'junit'
     }
 ```
@@ -56,28 +56,44 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
     * different extension mechanism: JUnit4 Rule vs. JUnit5 Extension
 
 ## Notes on supported features
+### Junit5 `@Disabled` vs Serenity `@Pending`
 * Junit5 `@Disabled` annotation can be used on *test* and *step* methods
-   * The following table outlines the difference of using JUnit5 `@Disabled` and Serenity `@Pending` on a step method
+* The following table outlines the difference of using JUnit5 `@Disabled` and Serenity `@Pending` on a step method
 
-        | Consequence of annotated step method for...     | JUnit5 `@Disabled` (same as `@Ignore` in JUnit4)         | Serenity `@Pending`  | 
-        | ------------------------------------------------|--------------------------------------------------------------| --------| 
-        | test outcome                                    | `ignored` | `pending` |
-        | annotated step method                           | skipped (= not executed) | skipped (= not executed) |
-        | annotated step method in report                 | `ignored`  | `pending` |
-        | step methods after the annotated step           | executed   | skipped (= not executed)|
-        | step methods after the annotated step in report | depending on execution e.g. `success`   | `ignored` |
+    | Consequence of annotated step method for...     | JUnit5 `@Disabled` (same as `@Ignore` in JUnit4)         | Serenity `@Pending`  | 
+    | ------------------------------------------------|--------------------------------------------------------------| --------| 
+    | test outcome                                    | `ignored` | `pending` |
+    | annotated step method                           | skipped (= not executed) | skipped (= not executed) |
+    | annotated step method in report                 | `ignored`  | `pending` |
+    | step methods after the annotated step           | executed   | skipped (= not executed)|
+    | step methods after the annotated step in report | depending on execution e.g. `success`   | `ignored` |
 
+### Tagging
+* Serenity and Junit5 provide annotations to tag tests and test classes. 
+   * The tags are shown in the Serenity report and can be used to filter the tests to be executed.
+      * In contrast to Serenity `@WithTag` the JUnit5 `@Test` annotation is repeatable. So multiple tags can be defined on a method or class without having to use a container annotation (Serenity: `@WithTags`, Junit5 (optional): `@Tags`)
+      * Junit5 `@Test` can also be used on meta-annotations. 
+* In Serenity tags have a _type_ and a _name_. For the Serenity report a Junit5 `@Tag` value is parsed like a Serenity `@WithTags` value. So it is also possible to define a type using Junit5 `@Tag`.
+   * Examples
+   
+       |Serenity | Junit5 | Result in Serenity report: type | Result in Serenity report: name |
+       | ------------------------------------------------|--------------------------------------------------------------| --------------------------------------------------------------| --------------------------------------------------------------|
+       | `@WithTag("tagName")`<br><br>`@WithTag(type="tag" name="tagName")`<br><br>`@WithTagValuesOf({"tagName"})` | `@Tag("tagName")`  | `tag` | `tagName` |
+       | `@WithTag(name="tagName")`<br><br>`@WithTag("feature:tagName")`<br><br>`@WithTagValuesOf({"feature:tagName"})` | `@Tag("feature:tagName")` | `feature` | `tagName` |
+       | `@WithTag("tagType=tagName")`<br><br>`@WithTag("tagType:tagName")`<br><br>`@WithTag(type="tagType" name="tagName")`<br><br>`@WithTagValuesOf({"tagType=tagName"})`<br><br>`@WithTagValuesOf({"tagType:tagName"})` | `@Tag("tagType=tagName")`<br><br>`@Tag("tagType:tagName")` | `tagType` | `tagName` |
+ * see also 
+   * JUnit5: https://junit.org/junit5/docs/current/user-guide/#writing-tests-tagging-and-filtering
+   * Serenity: http://thucydides.info/docs/serenity-staging/#_filtering_test_executing_with_tags
+    
 # Known limitations/currently not supported features:
 
 ## Serenity BDD features
-* `@WithTag` and `@WithTagsValuesOfTagging`
-    * http://thucydides.info/docs/serenity-staging/#_filtering_test_executing_with_tags)
-    * Tags are shown in the report
-    * Filtering of tests not possible => works with JUnit5 `@Tag` though
-    * Overlap with JUnit5 `@Tag` support
-* `@Title`
-    * http://thucydides.info/docs/serenity-staging/#_human_readable_method_titles
-    * The title is not considered for report nor as test name from JUnit perspective
+* `@WithTag` and `@WithTagValuesOf` (http://thucydides.info/docs/serenity-staging/#_filtering_test_executing_with_tags)
+    * Tags are shown in the report only for methods and declared as `public`. ([#21](https://github.com/fabianlinz/serenity-junit5/issues/21))
+    * Filtering of tests not yet possible => works with JUnit5 `@Tag` though ([#22](https://github.com/fabianlinz/serenity-junit5/issues/22))
+* `@Title` (http://thucydides.info/docs/serenity-staging/#_human_readable_method_titles)
+    * The title is not considered for the Serenity report unless the method is delcared as `public` ([#21](https://github.com/fabianlinz/serenity-junit5/issues/21)) nor as test name from JUnit perspective
+    * Consistently with Junit4 the `@Title` annotation does not influence the name in the Junit report.
 * Retrying failed tests
     * http://thucydides.info/docs/serenity-staging/#_retrying_failed_tests
 * SerenityParameterizedRunner (including Serenity `@Concurrent`)
@@ -95,9 +111,6 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
     * Injection not working (Steps, Page and WebDriver)
     * Story name should probably be a combination of the parent name and the nested test class name
     * see also https://junit.org/junit5/docs/current/user-guide/#writing-tests-nested
-* `@Tag`
-    * NOT considered for the report
-    * can be used to filter tests though
 * `@DisplayName`
     * on test method level: works = does control the scenario name
     * on test class level: is NOT considered for the story name
