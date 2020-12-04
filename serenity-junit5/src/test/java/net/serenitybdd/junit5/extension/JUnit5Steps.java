@@ -4,6 +4,7 @@ import net.serenitybdd.junit5.extension.testsupport.TestClassExecutionHelper;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.model.TestOutcome;
 import net.thucydides.core.model.TestResult;
+import net.thucydides.core.model.TestTag;
 import org.assertj.core.api.Assertions;
 
 import java.util.List;
@@ -110,5 +111,10 @@ class JUnit5Steps {
     void shouldHaveExactlyOneTestOutcomeWithResult(final TestResult result) {
         shouldHaveExactlyOneTestOutcome();
         shouldHaveTestResultXMatchingY(0, result);
+    }
+
+    public void shouldHaveTags(TestTag... tagName) {
+        shouldHaveExactlyOneTestOutcome();
+        assertThat(testOutcomes.get(0).getAllTags()).contains(tagName);
     }
 }

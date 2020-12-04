@@ -5,6 +5,7 @@ import lombok.ToString;
 import net.thucydides.core.annotations.Manual;
 import net.thucydides.core.annotations.Pending;
 import net.thucydides.core.model.TestResult;
+import net.thucydides.core.model.TestTag;
 import net.thucydides.core.steps.StepEventBus;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -16,6 +17,7 @@ import org.opentest4j.TestAbortedException;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
 import static net.thucydides.core.steps.StepEventBus.getEventBus;
 import static net.thucydides.core.steps.TestSourceType.TEST_SOURCE_JUNIT;
 
@@ -84,6 +86,7 @@ public class SerenityJUnitLifecycleAdapterExtension implements BeforeEachCallbac
         getEventBus().clear();
         getEventBus().setTestSource(TEST_SOURCE_JUNIT.getValue());
         getEventBus().testStarted(name, extensionContext.getRequiredTestClass());
+        getEventBus().addTagsToCurrentTest(extensionContext.getTags().stream().map(TestTag::withValue).collect(toList()));
     }
 
     private void startTestSuiteForFirstTest(ExtensionContext extensionContext) {

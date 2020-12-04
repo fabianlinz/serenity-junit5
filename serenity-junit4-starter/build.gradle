@@ -28,4 +28,7 @@ test {
 
 gradle.startParameter.continueOnFailure = true
 
+test.configure {
+    systemProperties = System.properties
+}
 test.finalizedBy(aggregate)
