@@ -120,8 +120,7 @@ class WhenRunningTaggedTests {
                 @WithTag("serenityTag"),
                 @WithTag(name = "serenityFeatureTag")
         })
-        // TODO until https://github.com/fabianlinz/serenity-junit5/issues/21 is fixed Serenity tag annotation are only considered on public methods
-        public void test() {
+        void test() {
         }
     }
 

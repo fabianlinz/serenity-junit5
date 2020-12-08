@@ -45,8 +45,7 @@ class Junit5TagTest {
     @Test
     @Tag("junit5Tag")
     @WithTag("serenityTag")
-    // TODO until https://github.com/fabianlinz/serenity-junit5/issues/21 is fixed Serenity tag annotation are only considered on public methods
-    public void shouldAllowUsageOfSerenityAndJunit5TagsTogether() {
+    void shouldAllowUsageOfSerenityAndJunit5TagsTogether() {
         // does not make sense though
     }
 
@@ -58,7 +57,7 @@ class Junit5TagTest {
 
     @Test
     @WithTag(name = "serenityFeatureTag")
-    public void serenityFeatureTag() {
+    void serenityFeatureTag() {
         // does not make sense though
     }
 

@@ -1,8 +1,7 @@
 package starter;
 
 import net.serenitybdd.junit5.SerenityTest;
-import net.thucydides.core.annotations.Manual;
-import net.thucydides.core.model.TestResult;
+import net.thucydides.core.annotations.Title;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -27,4 +26,9 @@ class PureJunit5Test {
         assumeTrue(true);
     }
 
+    @Test
+    @Title("An explicit title for the test.")
+    void testWithTitle() {
+
+    }
 }
