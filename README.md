@@ -56,7 +56,7 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
     * different extension mechanism: JUnit4 Rule vs. JUnit5 Extension
 
 ## Notes on supported features
-### Junit5 `@Disabled` vs Serenity `@Pending`
+### Junit5 `@Disabled` vs. Serenity `@Pending`
 * Junit5 `@Disabled` annotation can be used on *test* and *step* methods
 * The following table outlines the difference of using JUnit5 `@Disabled` and Serenity `@Pending` on a step method
 
@@ -85,20 +85,20 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
    * JUnit5: https://junit.org/junit5/docs/current/user-guide/#writing-tests-tagging-and-filtering
    * Serenity: http://thucydides.info/docs/serenity-staging/#_filtering_test_executing_with_tags
     
+### Other
+* Serenity `@Title` is considered for the Serenity report (http://thucydides.info/docs/serenity-staging/#_human_readable_method_titles)
+  * Consistently with Junit4 the `@Title` annotation does not influence the name in the Junit report.
+    
 # Known limitations/currently not supported features:
 
 ## Serenity BDD features
-* `@WithTag` and `@WithTagValuesOf` (http://thucydides.info/docs/serenity-staging/#_filtering_test_executing_with_tags)
-    * Tags are shown in the report only for methods and declared as `public`. ([#21](https://github.com/fabianlinz/serenity-junit5/issues/21))
+* `@WithTag` and `@WithTagValuesOf` (http://thucydides.info/docs/serenity-staging/#_filtering_test_executing_with_tags)   
     * Filtering of tests not yet possible => works with JUnit5 `@Tag` though ([#22](https://github.com/fabianlinz/serenity-junit5/issues/22))
-* `@Title` (http://thucydides.info/docs/serenity-staging/#_human_readable_method_titles)
-    * The title is not considered for the Serenity report unless the method is delcared as `public` ([#21](https://github.com/fabianlinz/serenity-junit5/issues/21)) nor as test name from JUnit perspective
-    * Consistently with Junit4 the `@Title` annotation does not influence the name in the Junit report.
-* Retrying failed tests
-    * http://thucydides.info/docs/serenity-staging/#_retrying_failed_tests
 * SerenityParameterizedRunner (including Serenity `@Concurrent`)
     * http://thucydides.info/docs/serenity-staging/#_data_driven_tests
     * Overlap to JUnit5 parameterized test support
+* Retrying failed tests
+    * http://thucydides.info/docs/serenity-staging/#_retrying_failed_tests
 * Difference for WebDriver configuration on method level (compared to JUnit4)
     * If the test method is annotated with @WithDriver the specified driver is also used for an @Managed field of type WebDriver without an explicit driver type.
  In JUnit4 the @Managed field would be the general default web driver. As this seems arbitrary anyway this difference seems to be acceptable in order to not further complicate the implementation.
