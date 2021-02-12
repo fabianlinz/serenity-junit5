@@ -30,15 +30,20 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(COMPROMISED);
+        junit5.shouldHaveStepResults(COMPROMISED);
     }
 
     @SerenityExtensionInnerTest
     static class ManualTakesPrecedenceOverPending {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = COMPROMISED)
         @Pending
         void manualDefault() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -49,14 +54,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(PENDING);
+        junit5.shouldHaveStepResults(PENDING);
     }
 
     @SerenityExtensionInnerTest
     static class ManualDefault {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual
         void manualDefault() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -67,14 +77,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(SUCCESS);
+        junit5.shouldHaveStepResults(SUCCESS);
     }
 
     @SerenityExtensionInnerTest
     static class ManualSuccess {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = SUCCESS)
         void manualSuccess() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -85,14 +100,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(FAILURE);
+        junit5.shouldHaveStepResults(FAILURE);
     }
 
     @SerenityExtensionInnerTest
     static class ManualFailure {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = FAILURE)
         void manualFailure() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -103,14 +123,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(IGNORED);
+        junit5.shouldHaveStepResults(IGNORED);
     }
 
     @SerenityExtensionInnerTest
     static class ManualIgnored {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = IGNORED)
         void manualIgnored() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -121,14 +146,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(PENDING);
+        junit5.shouldHaveStepResults(PENDING);
     }
 
     @SerenityExtensionInnerTest
     static class ManualPending {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = PENDING)
         void manualPending() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -139,14 +169,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(SKIPPED);
+        junit5.shouldHaveStepResults(SKIPPED);
     }
 
     @SerenityExtensionInnerTest
     static class ManualSkipped {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = SKIPPED)
         void manualSkipped() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -157,14 +192,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(PENDING);
+        junit5.shouldHaveStepResults(PENDING);
     }
 
     @SerenityExtensionInnerTest
     static class ManualUndefined {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = UNDEFINED)
         void manualUndefined() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -175,14 +215,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(ERROR);
+        junit5.shouldHaveStepResults(ERROR);
     }
 
     @SerenityExtensionInnerTest
     static class ManualError {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = ERROR)
         void manualError() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -193,14 +238,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(ERROR);
+        junit5.shouldHaveStepResults(ERROR);
     }
 
     @SerenityExtensionInnerTest
     static class ManualUnsuccessful {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = UNSUCCESSFUL)
         void manualUnsuccessful() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -211,14 +261,19 @@ class WhenRunningManualTests {
 
         // then
         junit5.shouldHaveExactlyOneTestOutcomeWithResult(COMPROMISED);
+        junit5.shouldHaveStepResults(COMPROMISED);
     }
 
     @SerenityExtensionInnerTest
     static class ManualCompromised {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(result = COMPROMISED)
         void manualCompromised() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 }
