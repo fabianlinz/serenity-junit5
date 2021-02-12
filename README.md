@@ -84,6 +84,13 @@ For teams using JUnit to declare the Serenity scenarios, the difference is somet
  * see also 
    * JUnit5: https://junit.org/junit5/docs/current/user-guide/#writing-tests-tagging-and-filtering
    * Serenity: http://thucydides.info/docs/serenity-staging/#_filtering_test_executing_with_tags
+
+### Serenity `@Manual`
+* Tests (not steps) can be annotated with `@Manual`.
+  * `@Manual` on a test method has no effect if the test method is also annotated with `@Disabled` or `@Pending` (consistent with JUnit4)
+  * In contrast to Junit4 a test method annotated with `@Manual` will actually be executed. This allows to further specify the example using
+    `@Step` methods and show them the report. While this is inconsistent with Junit4 support in Serenity, it is consistent with the Cucumber support
+    (see also https://serenity-bdd.github.io/theserenitybook/latest/manual-tests.html). 
     
 ### Other
 * Serenity `@Title` is considered for the Serenity report (http://thucydides.info/docs/serenity-staging/#_human_readable_method_titles)

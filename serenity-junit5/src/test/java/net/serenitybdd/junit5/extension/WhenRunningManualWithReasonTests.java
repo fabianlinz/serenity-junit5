@@ -38,14 +38,19 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(ERROR, HAS_REASON);
+        junit5.shouldHaveStepResults(ERROR);
     }
 
     @SerenityExtensionInnerTest
     static class ManualError {
+        
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason", result = ERROR)
         void manualError() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -56,14 +61,19 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(ERROR, HAS_REASON);
+        junit5.shouldHaveStepResults(ERROR);
     }
 
     @SerenityExtensionInnerTest
     static class ManualUnsuccessful {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason", result = UNSUCCESSFUL)
         void manualUnsuccessful() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -74,6 +84,7 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(COMPROMISED, HAS_REASON);
+        junit5.shouldHaveStepResults(COMPROMISED);
     }
 
     @Test
@@ -83,23 +94,32 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(FAILURE, HAS_REASON);
+        junit5.shouldHaveStepResults(FAILURE);
     }
 
     @SerenityExtensionInnerTest
     static class ManualFailure {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason", result = FAILURE)
         void manualFailure() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
     @SerenityExtensionInnerTest
     static class ManualCompromised {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason", result = COMPROMISED)
         void manualCompromised() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -110,14 +130,19 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(PENDING, REASON_IS_IGNORED);
+        junit5.shouldHaveStepResults(PENDING);
     }
 
     @SerenityExtensionInnerTest
     static class ManualDefault {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason")
         void manualDefault() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -128,14 +153,19 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(SUCCESS, REASON_IS_IGNORED);
+        junit5.shouldHaveStepResults(SUCCESS);
     }
 
     @SerenityExtensionInnerTest
     static class ManualSuccess {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason", result = SUCCESS)
         void manualSuccess() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -146,14 +176,19 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(IGNORED, REASON_IS_IGNORED);
+        junit5.shouldHaveStepResults(IGNORED);
     }
 
     @SerenityExtensionInnerTest
     static class ManualIgnored {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason", result = IGNORED)
         void manualIgnored() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -164,14 +199,19 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(PENDING, REASON_IS_IGNORED);
+        junit5.shouldHaveStepResults(PENDING);
     }
 
     @SerenityExtensionInnerTest
     static class ManualPending {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason", result = PENDING)
         void manualPending() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -182,14 +222,19 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(SKIPPED, REASON_IS_IGNORED);
+        junit5.shouldHaveStepResults(SKIPPED);
     }
 
     @SerenityExtensionInnerTest
     static class ManualSkipped {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason", result = SKIPPED)
         void manualSkipped() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 
@@ -200,14 +245,19 @@ class WhenRunningManualWithReasonTests {
 
         // then
         junit5.shouldHaveExactlyOneTestResultXMatchingY(PENDING, REASON_IS_IGNORED);
+        junit5.shouldHaveStepResults(PENDING);
     }
 
     @SerenityExtensionInnerTest
     static class ManualUndefined {
+
+        @Steps
+        private InnerSteps innerSteps;
+
         @Test
         @Manual(reason = "Test reason", result = UNDEFINED)
         void manualUndefined() {
-            throw new UnsupportedOperationException();
+            innerSteps.succeedingStepNumber(1);
         }
     }
 }

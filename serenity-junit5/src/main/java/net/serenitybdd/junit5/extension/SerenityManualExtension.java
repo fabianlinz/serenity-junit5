@@ -1,5 +1,6 @@
 package net.serenitybdd.junit5.extension;
 
+import lombok.extern.slf4j.Slf4j;
 import net.thucydides.core.annotations.Manual;
 import net.thucydides.core.annotations.ManualTestMarkedAsError;
 import net.thucydides.core.annotations.ManualTestMarkedAsFailure;
@@ -15,6 +16,7 @@ import static net.thucydides.core.steps.StepEventBus.getEventBus;
 
 // net.serenitybdd.junit.runners.SerenityRunner.markAsManual
 // start and end events for tests will be fired by SerenityJUnitLifecycleAdapterExtension
+@Slf4j
 public class SerenityManualExtension implements InvocationInterceptor {
 
     @Override
@@ -24,7 +26,11 @@ public class SerenityManualExtension implements InvocationInterceptor {
         final Method testMethod = extensionContext.getRequiredTestMethod();
 
         if (testMethod.isAnnotationPresent(Manual.class)) {
-            invocation.skip();
+            try {
+                invocation.proceed();
+            } catch (Exception e) {
+                log.error("Exception during test execution on @Manual test will be ignored.", e);
+            }
             markAsManual(testMethod.getAnnotation(Manual.class), getEventBus());
         } else {
             invocation.proceed();
