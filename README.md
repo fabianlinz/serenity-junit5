@@ -1,3 +1,10 @@
+
+---
+
+**:exclamation: With version 2.6.0 Serenity BDD added out of the box support for Junit5 (`net.serenitybdd.junit5.SerenityJUnit5Extension`). So it makes no sense to further improve this extension.**
+ 
+---
+
 ![master build status](https://github.com/fabianlinz/serenity-junit5/workflows/Build/badge.svg?branch=master)
 [![maven-central](https://img.shields.io/maven-central/v/io.github.fabianlinz/serenity-junit5.svg)](https://search.maven.org/search?q=g:io.github.fabianlinz%20AND%20a:serenity-junit5)
 
